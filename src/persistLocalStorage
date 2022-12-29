@@ -1,0 +1,65 @@
+import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css";
+import AddUser from './components/AddUser';
+import ContactsList from './components/ContactsList';
+import { v4 as uuid } from 'uuid'
+
+function App() {
+  const LOCAL_STORAGE_KEY = 'user';
+
+  // const userDetails = [
+  //   {
+  //       id:'1',
+  //       username:"Harshal",
+  //       email:"harshal@email.in"
+  //   },
+  //   {
+  //       id:'2',
+  //       username:"Ashish",
+  //       email:"ashish@email.in"
+  //   },
+  //   {
+  //       id:'3',
+  //       username:"Soni",
+  //       email:"soni@email.in"
+  //   }
+  // ]
+
+  const [contacts, setContact] = useState([])
+
+  const addContact = (newContact) => {
+    // console.log(newContact);
+
+    const contact = {...newContact, id:uuid()}
+
+    setContact(preVal => {
+      return [...preVal, contact]
+    })
+  }
+
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+    console.log(localData)
+    if(localData) setContact(localData)
+
+    return ()  => {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts))
+  }, [contacts])
+
+
+  return (
+    <div className="main d-flex flex-column justify-content-center">
+      <AddUser addContact={addContact} />
+      <ContactsList contacts={contacts} />
+    </div>
+  )
+
+}
+
+export default App;

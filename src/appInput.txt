@@ -1,0 +1,22 @@
+import { useState } from "react";
+import "./App.css";
+
+// use Controlled HTML input field
+function App() {
+
+  const [searchInputValue, setSearchInputValue] = useState("");
+
+  const inputValueHandler = (e) => {
+    const inputValue = e.target.value;
+    setSearchInputValue(inputValue);
+  }
+
+  return (
+    <div className="App">
+        <h3>Search User</h3>
+        <input type="text" onChange={(e) => inputValueHandler(e)} value={searchInputValue}/>
+    </div>
+  )
+}
+
+export default App;
